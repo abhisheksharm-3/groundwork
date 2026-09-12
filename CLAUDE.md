@@ -103,13 +103,14 @@ itself. Code that survives that strip must not reference code that does not.
 | `src/styles/tokens.css` | The only place design values are defined |
 | `template.modules.json` | What each module consists of; `setup.ts` reads it |
 
-## The five-things rule
+## The manifest rule
 
-A module owns its `src/modules/<name>/` folder, its `src/app/(<name>)/` route group,
-one line in `registry.ts`, one block in `.env.example`, one entry in `lib/env.ts`.
-Nothing else may name it. Adding a sixth touch point breaks `setup.ts` silently —
-the strip succeeds and the build fails later. When adding to the template, check this
-first.
+`template.modules.json` declares a module's whole footprint: its `src/modules/<name>/`
+folder, its route paths (Razorpay has two, Supabase three), its `registry.ts` line, its
+`.env.example` block, its `lib/env.ts` entry, its `package.json` deps, its
+`site-config.ts` nav entries. A touch point the manifest does not list breaks `setup.ts`
+silently — the strip succeeds and the build fails later. Adding to a module means
+updating the manifest in the same commit. `npm run check` greps for this.
 
 ## Gotchas
 
@@ -125,3 +126,13 @@ first.
   webhook, never the browser callback.
 - `src/modules/supabase/admin.ts` holds the service-role key and is the only file
   allowed to read it.
+- CSP is hash-based via `experimental.sri`, set in `next.config.ts`. Do not add a
+  per-request nonce: it forces every page dynamic and kills the static shell that
+  `partialPrefetching` and the `instant()` test depend on.
+- `proxy.ts` only refreshes the Supabase session. Return the `supabaseResponse`
+  unmodified and use the `getAll`/`setAll` cookie adapter — the deprecated
+  `get`/`set`/`remove` one breaks session refresh with no error.
+- `error.tsx` is the plain file convention. It already gets `retry` and already
+  ignores `notFound()`. Do not wrap it in `catchError`.
+- Check files (`*.check.mts`) run under Node's type stripping, which does not resolve
+  the `@/` alias. Import by relative path or they fail at run time.
