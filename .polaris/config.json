@@ -1,0 +1,13 @@
+{
+  "mode": "custom",
+  "deadCode": "delete",
+  "backwardCompat": "none",
+  "architecture": {
+    "conventions": "Single Next.js App Router app, no monorepo. src/app routes, src/modules/<name> for removable feature modules, src/components/ui for generated shadcn, src/components/site for shared layout, src/lib for cross-cutting helpers, src/styles/tokens.css as the only source of design values. A module owns exactly five things: its src/modules/<name> folder, its src/app/(<name>) route group, one line in src/modules/registry.ts, one block in .env.example, one entry in src/lib/env.ts. Nothing else may name a module. Mutations are Server Actions with Zod parsing as the first statement; API routes exist only for inbound third-party POSTs. Risky logic carries a sibling *.check.mts node-native self-test wired into npm run check."
+  },
+  "naming": { "source": "polaris", "rules": {} },
+  "pr": { "source": "polaris", "standards": "" },
+  "guardEdit": true,
+  "promptEnhance": false,
+  "routing": true
+}
