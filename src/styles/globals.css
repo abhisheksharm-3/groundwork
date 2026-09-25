@@ -1,3 +1,173 @@
+/**
+ * The mechanics of the design system: base element styles, the handful of
+ * primitives, and motion. Values come from tokens.css; nothing here is a
+ * per-project decision, so a rebrand never needs to open this file.
+ */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./tokens.css";
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    background-color: var(--color-brand-deepest);
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    font-variation-settings: "wdth" 96;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-action);
+    color: var(--color-action-ink);
+  }
+
+  :focus-visible {
+    outline: 0.1875rem solid var(--color-ring);
+    outline-offset: 0.1875rem;
+  }
+
+  .on-brand :focus-visible {
+    outline-color: var(--color-action);
+  }
+}
+
+/** Tracked, width-condensed caps for eyebrows, labels and nav. */
+@utility label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  font-variation-settings: "wdth" 78;
+  letter-spacing: var(--tracking-label);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+/** The page's content column, with the gutter that keeps it off the screen edge. */
+@utility page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-page);
+  padding-inline: var(--spacing-gutter);
+}
+
+/**
+ * The signature. A woven edge where one band meets the next: two rows of picks,
+ * the second offset by one pick, which is how a plain weave looks at a selvedge.
+ * Colored from `currentColor`, so the band decides what the thread is.
+ */
+@utility selvedge {
+  height: calc(var(--selvedge-row) * 2);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      currentColor 0 var(--selvedge-pick),
+      transparent var(--selvedge-pick) calc(var(--selvedge-pick) * 2)
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 var(--selvedge-pick),
+      currentColor var(--selvedge-pick) calc(var(--selvedge-pick) * 2)
+    );
+  background-position:
+    0 0,
+    0 var(--selvedge-row);
+  background-size: 100% var(--selvedge-row);
+  background-repeat: repeat-x;
+}
+
+/** A drenched brand band: the ground, the text and the focus ring all flip. */
+@utility on-brand {
+  background-color: var(--color-brand-deep);
+  color: var(--color-on-brand);
+}
+
+/**
+ * All motion lives behind `no-preference`, so a reader who asks for reduced
+ * motion never gets it, rather than getting it and then having it overridden.
+ * With motion reduced, a view transition falls back to the browser's crossfade.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal="pending"] {
+    opacity: 0;
+    translate: 0 var(--reveal-offset);
+  }
+
+  [data-reveal="shown"] {
+    transition:
+      opacity var(--duration-reveal) var(--ease-out-expo),
+      translate var(--duration-reveal) var(--ease-out-expo);
+    transition-delay: calc(var(--step, 0) * var(--stagger));
+  }
+
+  .enter {
+    animation: rise var(--duration-reveal) var(--ease-out-expo) both;
+    animation-delay: calc(var(--step, 0) * var(--stagger));
+  }
+
+  ::view-transition-old(.nav-forward),
+  ::view-transition-old(.nav-back) {
+    animation: fade-out calc(var(--duration-route) * 0.45) var(--ease-out-quart)
+      both;
+  }
+
+  ::view-transition-new(.nav-forward) {
+    --slide-from: var(--route-offset);
+    animation: slide var(--duration-route) var(--ease-out-expo) both;
+  }
+
+  ::view-transition-new(.nav-back) {
+    --slide-from: calc(var(--route-offset) * -1);
+    animation: slide var(--duration-route) var(--ease-out-expo) both;
+  }
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 var(--reveal-offset);
+  }
+}
+
+@keyframes slide {
+  from {
+    translate: var(--slide-from, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}

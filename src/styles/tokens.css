@@ -1,3 +1,104 @@
+/**
+ * Every design value on the site. Recoloring a project means editing this file
+ * and nothing else: the two hue knobs below drive every brand, action and
+ * neutral color, because each is derived from them in OKLCH.
+ *
+ * Components read roles (`brand`, `action`, `ground`), never color names, so a
+ * client whose brand is green never ends up with a `bg-indigo` class.
+ *
+ * The demo values describe Weft, a fictional textile gathering: indigo carries
+ * the brand, turmeric is the one action color. Both are natural dyes.
+ */
+
+:root {
+  --hue-brand: 268;
+  --hue-action: 88;
+  --hue-signal: 28;
+}
+
 @theme {
-  --color-ink: oklch(0.2 0.02 260);
+  --color-brand-deepest: oklch(0.2 0.06 var(--hue-brand));
+  --color-brand-deep: oklch(0.27 0.09 var(--hue-brand));
+  --color-brand: oklch(0.35 0.12 var(--hue-brand));
+  --color-brand-bright: oklch(0.5 0.15 var(--hue-brand));
+  --color-brand-soft: oklch(0.84 0.05 var(--hue-brand));
+  --color-brand-tint: oklch(0.93 0.025 var(--hue-brand));
+
+  --color-action: oklch(0.84 0.16 var(--hue-action));
+  --color-action-deep: oklch(0.74 0.16 calc(var(--hue-action) - 12));
+  --color-action-ink: oklch(0.2 0.05 var(--hue-brand));
+
+  --color-signal: oklch(0.5 0.17 var(--hue-signal));
+  --color-signal-tint: oklch(0.95 0.03 var(--hue-signal));
+
+  --color-ground: oklch(0.967 0.013 85);
+  --color-ground-alt: oklch(0.93 0.02 82);
+  --color-surface: oklch(0.99 0.006 85);
+  --color-ink: oklch(0.22 0.035 var(--hue-brand));
+  --color-ink-soft: oklch(0.45 0.03 var(--hue-brand));
+  --color-line: oklch(0.22 0.035 var(--hue-brand) / 0.14);
+  --color-on-brand: oklch(0.967 0.013 85);
+  --color-on-brand-soft: oklch(0.84 0.03 var(--hue-brand));
+
+  --color-background: var(--color-ground);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: var(--color-on-brand);
+  --color-secondary: var(--color-ground-alt);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-ground-alt);
+  --color-muted-foreground: var(--color-ink-soft);
+  --color-accent: var(--color-brand-tint);
+  --color-accent-foreground: var(--color-brand-deep);
+  --color-destructive: var(--color-signal);
+  --color-border: var(--color-line);
+  --color-input: oklch(0.22 0.035 var(--hue-brand) / 0.28);
+  --color-ring: var(--color-brand-bright);
+
+  --font-display: var(--face-display), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--face-body), ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.4;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.55;
+  --text-xl: clamp(1.4rem, 1.15rem + 0.9vw, 1.8rem);
+  --text-xl--line-height: 1.25;
+  --text-2xl: clamp(1.9rem, 1.4rem + 1.8vw, 2.8rem);
+  --text-2xl--line-height: 1.1;
+  --text-3xl: clamp(2.5rem, 1.6rem + 3.4vw, 4.4rem);
+  --text-3xl--line-height: 1;
+  --text-display: clamp(4rem, 1.5rem + 11vw, 11rem);
+  --text-display--line-height: 0.86;
+
+  --tracking-label: 0.14em;
+  --tracking-tight: -0.015em;
+
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+
+  --shadow-lift: 0 1.5rem 3rem -1.75rem oklch(0.2 0.06 var(--hue-brand) / 0.45);
+  --shadow-press: 0 0.25rem 0 0 var(--color-action-deep);
+
+  --spacing-gutter: clamp(1.25rem, 0.6rem + 3vw, 3rem);
+  --spacing-section: clamp(4.5rem, 3rem + 6vw, 9rem);
+  --container-page: 76rem;
+  --container-prose: 38rem;
+
+  --selvedge-pick: 0.5rem;
+  --selvedge-row: 0.3125rem;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-quick: 180ms;
+  --duration-reveal: 760ms;
+  --duration-route: 420ms;
+  --stagger: 90ms;
+  --reveal-offset: 1.25rem;
+  --route-offset: 3.5rem;
 }
