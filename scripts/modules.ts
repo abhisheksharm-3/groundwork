@@ -7,7 +7,7 @@
  * A block starts at a marker naming its module:
  * - code: a `/** @module name *\/` line, owning the one statement after it,
  *   however many lines that statement spans;
- * - `.env.example`: a `# @module name` line, owning everything to the next blank line;
+ * - `.env.example` and YAML: a `# @module name` line, owning everything to the next blank line;
  * - markdown: `<!-- @module name -->` to `<!-- /@module name -->`.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
@@ -25,7 +25,10 @@ const STATEMENT_END = /[;,]\s*$/;
 const SCANNED_ROOTS = ["src", "next.config.ts", ".env.example", "package.json"];
 
 /** Files a strip rewrites: the scanned code plus the docs that describe modules. */
-const STRIPPED_ROOTS = [...SCANNED_ROOTS, "CLAUDE.md", "README.md"];
+const STRIPPED_ROOTS = [...SCANNED_ROOTS, "CLAUDE.md", "README.md", ".github"];
+
+/** Files whose markers are `#` lines: the env example and YAML. */
+const HASH_COMMENTED = /(\.env\.example|\.ya?ml)$/;
 
 export function readManifest(root: string): ManifestType {
   return ManifestSchema.parse(
@@ -157,13 +160,13 @@ function markedRanges(
   modules: ReadonlySet<string>,
 ): RangeType[] {
   if (path.endsWith(".md")) return markdownRanges(lines, modules);
-  if (path.endsWith(".env.example")) return envRanges(lines, modules);
+  if (HASH_COMMENTED.test(path)) return envRanges(lines, modules);
   return codeRanges(lines, modules);
 }
 
 function markerName(path: string, line: string): string | undefined {
   if (path.endsWith(".md")) return MARKDOWN_START.exec(line)?.[1];
-  if (path.endsWith(".env.example")) return ENV_MARKER.exec(line)?.[1];
+  if (HASH_COMMENTED.test(path)) return ENV_MARKER.exec(line)?.[1];
   return CODE_MARKER.exec(line)?.[1];
 }
 

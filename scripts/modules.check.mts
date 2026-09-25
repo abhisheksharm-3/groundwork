@@ -116,6 +116,21 @@ assert.equal(
   "an env block strips to the next blank line",
 );
 
+const workflow = [
+  "jobs:",
+  "  gate:",
+  "    runs-on: x",
+  "",
+  "# @module pay",
+  "  pay-job:",
+  "    runs-on: y",
+].join("\n");
+assert.equal(
+  stripSource(".github/workflows/ci.yml", workflow, drop),
+  ["jobs:", "  gate:", "    runs-on: x"].join("\n"),
+  "a YAML block strips like an env block",
+);
+
 const markdown = [
   "# Title",
   "<!-- @module pay -->",

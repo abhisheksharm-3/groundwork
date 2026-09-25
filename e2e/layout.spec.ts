@@ -1,11 +1,15 @@
 /**
- * Every page fits the viewport it is given: no sideways scroll at phone width,
- * which is the most common way a fluid layout breaks, and nothing on the console.
+ * Every page fits the viewport it is given, logs nothing to the console, and has no
+ * WCAG 2.2 AA violation axe can detect. Sideways scroll at phone width is the most
+ * common way a fluid layout breaks; axe catches contrast, names and landmarks.
  */
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 for (const path of ["/", "/about", "/pricing", "/contact"]) {
-  test(`${path} fits the viewport and logs no errors`, async ({ page }) => {
+  test(`${path} fits the viewport, logs nothing and passes axe`, async ({
+    page,
+  }) => {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("console", (message) => {
@@ -20,5 +24,14 @@ for (const path of ["/", "/about", "/pricing", "/contact"]) {
     );
     expect(overflow, "horizontal overflow in pixels").toBeLessThanOrEqual(0);
     expect(errors).toEqual([]);
+    const { violations } = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+      .analyze();
+    expect(
+      violations.map(
+        (violation) =>
+          `${violation.id}: ${violation.nodes.length} × ${violation.help}`,
+      ),
+    ).toEqual([]);
   });
 }

@@ -1,0 +1,22 @@
+# Keeps every dependency on its latest release. Minor and patch updates arrive as one
+# weekly pull request; a major gets its own, because it is the kind that changes APIs.
+# CI runs the full gate on each, so a green check is the merge signal.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ["*"]

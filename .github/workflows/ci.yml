@@ -1,0 +1,60 @@
+# The gate on every push and pull request: types, lint, check files, then the
+# end-to-end suite on a production build, desktop and phone.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: cp .env.example .env.local
+      - uses: actions/cache@v6
+        with:
+          path: .next/cache
+          key: next-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**') }}
+          restore-keys: next-${{ hashFiles('package-lock.json') }}-
+      - run: npx playwright install --with-deps chromium
+      - run: npm run check
+      - run: npm run e2e
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-results
+          path: test-results/
+
+# @module template
+  strip-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        answers:
+          - "acme y y y resend acme"
+          - "acme n y y smtp acme"
+          - "acme y n y resend acme"
+          - "acme y y n acme"
+          - "acme n n n acme"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: git config --global user.name ci && git config --global user.email ci@example.com
+      - run: printf '%s\n' ${{ matrix.answers }} | npm run setup
+      - run: cp .env.example .env.local && npm run build
