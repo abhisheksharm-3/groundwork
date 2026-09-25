@@ -1,7 +1,7 @@
 /**
  * The email module's one capability: send a mail through the first configured
- * transport. Each transport is a marked import and entry; setup.ts removes the
- * one a project did not choose.
+ * transport. Each transport is a marked import and entry, so removing one
+ * leaves the others working.
  */
 import "server-only";
 import { ENV } from "@/lib/env";

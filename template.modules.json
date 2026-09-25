@@ -1,0 +1,64 @@
+{
+  "$comment": "Every file, dependency and keyword each optional module owns. setup.ts reads this; scripts/modules.check.mts fails the gate when a module touches something not listed here or not marked with @module.",
+  "modules": {
+    "razorpay": {
+      "label": "Payments with Razorpay",
+      "paths": [
+        "src/modules/razorpay",
+        "src/app/(checkout)",
+        "src/app/api/razorpay"
+      ],
+      "dependencies": ["@react-email/components"],
+      "keywords": ["razorpay"],
+      "scripts": []
+    },
+    "supabase": {
+      "label": "Accounts and storage with Supabase (email, Google, dashboard)",
+      "paths": [
+        "src/modules/supabase",
+        "src/app/(auth)",
+        "src/app/(dashboard)",
+        "src/proxy.ts"
+      ],
+      "dependencies": ["@supabase/ssr", "@supabase/supabase-js"],
+      "keywords": ["supabase"],
+      "scripts": []
+    },
+    "email": {
+      "label": "Sending email (receipts, contact messages)",
+      "paths": ["src/modules/email"],
+      "dependencies": [],
+      "keywords": ["modules/email", "EMAIL_ENV", "EMAIL_FROM"],
+      "scripts": []
+    },
+    "email-resend": {
+      "label": "Email through Resend",
+      "parent": "email",
+      "paths": ["src/modules/email/resend.ts"],
+      "dependencies": [],
+      "keywords": ["resend"],
+      "scripts": []
+    },
+    "email-smtp": {
+      "label": "Email through SMTP (Gmail, Zoho, SES)",
+      "parent": "email",
+      "paths": ["src/modules/email/smtp.ts"],
+      "dependencies": ["nodemailer", "@types/nodemailer"],
+      "keywords": ["nodemailer", "smtp"],
+      "scripts": []
+    },
+    "template": {
+      "label": "This template's own setup tooling",
+      "alwaysDrop": true,
+      "paths": [
+        "setup.ts",
+        "template.modules.json",
+        "scripts",
+        ".polaris/specs/2026-09-12-client-site-template-spec.md"
+      ],
+      "dependencies": [],
+      "scripts": ["setup"],
+      "keywords": ["template.modules.json", "setup.ts"]
+    }
+  }
+}

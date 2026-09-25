@@ -1,8 +1,8 @@
 /**
  * The response headers every page carries, with the Content Security Policy built
  * from a core policy plus whatever sources each module contributes. It lives
- * here rather than in proxy.ts so it survives Supabase being stripped, and so a
- * check file can assert on it.
+ * here rather than in a proxy, so it applies whether or not a module adds one,
+ * and so a check file can assert on it.
  *
  * Scripts must allow `'unsafe-inline'`. The App Router ships its RSC payload and
  * every Suspense reveal as inline scripts; `script-src 'self'` stops the page

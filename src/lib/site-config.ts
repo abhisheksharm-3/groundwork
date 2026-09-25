@@ -3,11 +3,11 @@
  * header, footer, metadata and every page read from here, so a new client is
  * mostly an edit to this file and to tokens.css.
  *
- * Pure data with no `@/` imports, because the Razorpay price check imports it
- * under Node's type stripping, which does not resolve path aliases.
+ * Pure data with no `@/` imports, because check files import it under Node's
+ * type stripping, which does not resolve path aliases.
  *
  * A property preceded by an `@module <name>` doc comment belongs to that
- * module, and `setup.ts` deletes it when the module is dropped.
+ * module, and goes with it when the module is removed.
  */
 import type { SiteConfigType } from "../types/site.ts";
 

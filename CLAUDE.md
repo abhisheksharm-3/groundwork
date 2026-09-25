@@ -65,52 +65,50 @@ Default to surfacing uncertainty, not hiding it.
 
 ---
 
+<!-- @module template -->
 ## What this repo is
 
-A starter template for client sites, not a product. Every file here gets copied into
-real projects, so a shortcut taken once is a shortcut shipped many times. The spec is
-`.polaris/specs/2026-09-12-client-site-template-spec.md`; read it before changing
-structure.
+The groundwork template for client sites, not a product. Every file here is copied
+into real projects, so a shortcut taken once is a shortcut shipped many times. The
+spec is `.polaris/specs/2026-09-12-client-site-template-spec.md`; read it before
+changing structure.
 
-`npx tsx setup.ts` strips the modules a given project does not need and then deletes
-itself. Code that survives that strip must not reference code that does not.
+`npm run setup` asks which optional modules a project keeps, removes the rest from
+every file they touch, checks the result and starts a fresh git history. Code that
+survives a strip must not reference code that does not.
+
+## The manifest rule
+
+`template.modules.json` lists each module's paths, dependencies, scripts and
+keywords. A module's lines in shared files sit under a marker: `/** @module name */`
+above one statement in code, `# @module name` above a block in `.env.example`,
+`<!-- @module name -->` around a section in markdown. `scripts/modules.check.mts`
+fails the gate when any keyword appears outside the module's paths and marked
+blocks, so a new touch point has to be marked the day it is added.
+<!-- /@module template -->
 
 ## Commands
 
 | Command | Description |
-|---------|-------------|
+|---|---|
 | `npm run dev` | Dev server, Turbopack |
 | `npm run build` | Production build, type-checked by TypeScript 7 |
-| `npm run check` | `typecheck` + `lint` + every `*.check.mts` self-test. The gate. |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run lint` | `biome check` |
+| `npm run check` | Route types, `tsc`, Biome, and every `*.check.mts`. The gate. |
 | `npm run format` | `biome format --write` |
-| `npm run e2e` | Playwright, including the `instant()` navigation assertion |
-| `npx tsx setup.ts` | One-time project setup; strips unused modules, self-deletes |
+| `npm run e2e` | Playwright against a production build, including the `instant()` guard |
 
 ## Architecture
 
 | Path | Purpose |
 |---|---|
-| `src/app/(marketing)/` | The demo site: home, about, pricing, contact |
-| `src/app/(auth)/`, `(dashboard)/` | Supabase module routes |
-| `src/app/(checkout)/`, `api/razorpay/` | Razorpay module routes |
-| `src/modules/<name>/` | All logic for one removable module |
-| `src/modules/registry.ts` | One import line per module |
+| `src/app/(marketing)/` | Home, programme, passes, contact |
+| `src/features/` | Always-present features (contact) |
+| `src/modules/` | Optional modules; `registry.ts` is where they plug into the core |
 | `src/components/ui/` | Generated shadcn. Do not hand-edit. |
-| `src/components/site/` | Nav, footer, section and hero primitives |
-| `src/lib/env.ts` | Zod-parsed environment, one block per module |
+| `src/components/site/` | Header, footer, page mast, form field, reveal, transitions |
+| `src/lib/` | Env, pricing, rate limit, security headers, site config |
+| `src/types/` | Types shared by more than one feature |
 | `src/styles/tokens.css` | The only place design values are defined |
-| `template.modules.json` | What each module consists of; `setup.ts` reads it |
-
-## The manifest rule
-
-`template.modules.json` declares a module's whole footprint: its `src/modules/<name>/`
-folder, its route paths (Razorpay has two, Supabase three), its `registry.ts` line, its
-`.env.example` block, its `lib/env.ts` entry, its `package.json` deps, its
-`site-config.ts` nav entries. A touch point the manifest does not list breaks `setup.ts`
-silently — the strip succeeds and the build fails later. Adding to a module means
-updating the manifest in the same commit. `npm run check` greps for this.
 
 ## One kind of thing per file
 
@@ -130,22 +128,33 @@ component's own props type.
 - Read `node_modules/next/dist/docs/` before writing Next-specific code. This version
   post-dates most training data.
 - A literal hex or px value in a component is a bug. Everything reads `tokens.css`.
-- Razorpay: the amount is computed server-side and confirmation comes from the
-  webhook, never the browser callback.
-- `src/modules/supabase/admin.ts` holds the service-role key and is the only file
-  allowed to read it.
+  The only literals are the sRGB `chrome` colors in `site-config.ts`, for the places
+  CSS cannot reach: theme-color, the share card, email.
+- `typedRoutes` is on. A computed href needs `Route<'/path/${string}'>`, and a plain
+  `Route` excludes dynamic routes.
 - CSP is static, built in `src/lib/security-headers.ts`. Scripts need `'unsafe-inline'`:
   the App Router's RSC payload and Suspense reveals are inline scripts, and
   `script-src 'self'` stops hydration (measured). Never add a per-request nonce: it
   forces every page dynamic and kills the static shell. A module adds CSP hosts
   through its own `csp.ts`, imported by `next.config.ts`.
-- `proxy.ts` only refreshes the Supabase session. Return the `supabaseResponse`
-  unmodified and use the `getAll`/`setAll` cookie adapter — the deprecated
-  `get`/`set`/`remove` one breaks session refresh with no error.
 - `error.tsx` is the plain file convention. It already gets `retry` and already
   ignores `notFound()`. Do not wrap it in `catchError`.
+- A module that is installed but unconfigured answers `false` from its capability,
+  never throws, so a fresh clone runs on placeholder values.
 - Check files (`*.check.mts`) run under Node's type stripping, which does not resolve
   the `@/` alias. Import by relative path or they fail at run time.
+<!-- @module razorpay -->
+- Razorpay: the amount comes from `lib/pricing.ts` on the server and confirmation
+  comes from the webhook, never the browser return. `checkout.js` writes innerHTML,
+  so `/checkout/*` runs without the Trusted Types requirement; nothing else does.
+<!-- /@module razorpay -->
+<!-- @module supabase -->
+- `src/proxy.ts` only refreshes the Supabase session and guards `/dashboard`. Keep
+  `getClaims` straight after creating the client, and return the response `setAll`
+  last built; an earlier one does not carry the refreshed cookies.
+- Every table in `src/modules/supabase/schema.sql` needs RLS and a policy; the check
+  fails the gate otherwise.
+<!-- /@module supabase -->
 
 <!-- BEGIN:nextjs-agent-rules -->
 

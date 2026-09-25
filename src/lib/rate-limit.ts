@@ -4,7 +4,7 @@
  * messages never spends the order action's allowance.
  *
  * ponytail: the counters live in this process's memory, so the limit holds per
- * instance and resets on deploy. Move them to Upstash Redis or a Supabase table
+ * instance and resets on deploy. Move them to Upstash Redis or a database table
  * once the site runs on more than one instance.
  */
 import type {

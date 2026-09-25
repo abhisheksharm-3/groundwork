@@ -1,7 +1,7 @@
 /**
  * The email module's settings. Each transport's own variables are marked, so
- * setup.ts keeps only the transport a project chose. With none set, mail is
- * logged instead of sent.
+ * removing a transport removes its variables. With none set, mail is logged
+ * instead of sent.
  */
 import { OPTIONAL_TEXT } from "@/lib/env-fields";
 

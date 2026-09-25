@@ -29,9 +29,9 @@ export type SiteConfigType = {
   nav: readonly NavItemType[];
   passes: readonly PassType[];
   earlyUntil: string;
-  /** @module razorpay */
+  /** Where a pass is bought; absent when the site sells no passes online. */
   checkout?: (passId: string) => Route<`/checkout/${string}`>;
-  /** @module supabase */
+  /** The signed-in area's nav entry; absent when the site has no accounts. */
   account?: NavItemType;
 };
 
