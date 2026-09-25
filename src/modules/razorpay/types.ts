@@ -12,6 +12,7 @@ export type BuyerType = { name: string; email: string; phone: string };
 
 export type SaleType = {
   buyer: BuyerType;
+  passId: string;
   passName: string;
   paymentId: string;
   orderId: string;
@@ -24,7 +25,8 @@ export type ConfirmReasonType =
   | "already-confirmed"
   | "not-captured"
   | "order-unreadable"
-  | "mail-failed";
+  | "mail-failed"
+  | "record-failed";
 
 export type ConfirmOutcomeType =
   | { isConfirmed: true }

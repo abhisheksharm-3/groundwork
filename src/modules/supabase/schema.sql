@@ -47,3 +47,25 @@ alter table public.contact_messages enable row level security;
 create policy "anyone may send a message"
   on public.contact_messages for insert to anon, authenticated
   with check (true);
+
+-- Confirmed sales, written only by the payment webhook with the secret key, which
+-- bypasses RLS. A signed-in buyer may read the orders placed under their email;
+-- nobody may insert, change or delete one through the API.
+create table public.orders (
+  id bigint generated always as identity primary key,
+  payment_id text not null unique,
+  order_id text not null,
+  pass_id text not null,
+  pass_name text not null,
+  amount numeric(10, 2) not null check (amount >= 0),
+  buyer_name text not null,
+  buyer_email text not null,
+  buyer_phone text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.orders enable row level security;
+
+create policy "buyers read their own orders"
+  on public.orders for select to authenticated
+  using (buyer_email = lower((select auth.jwt() ->> 'email')));

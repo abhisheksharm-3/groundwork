@@ -35,4 +35,5 @@ export const RETRYABLE_REASONS: ReadonlySet<ConfirmReasonType> = new Set([
   "payment-unreadable",
   "order-unreadable",
   "mail-failed",
+  "record-failed",
 ]);

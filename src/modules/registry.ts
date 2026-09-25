@@ -9,10 +9,14 @@ import type { CapabilitiesType } from "@/types/capabilities";
 import { sendMail } from "./email/send";
 /** @module supabase */
 import { saveContactMessage } from "./supabase/contact";
+/** @module supabase */
+import { recordSale } from "./supabase/orders";
 
 export const CAPABILITIES: CapabilitiesType = {
   /** @module email */
   sendMail,
   /** @module supabase */
   saveContactMessage,
+  /** @module supabase */
+  recordSale,
 };

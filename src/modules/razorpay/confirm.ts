@@ -11,6 +11,7 @@
 import "server-only";
 import { deliverMail } from "@/lib/deliver-mail";
 import { findPass } from "@/lib/pricing";
+import { CAPABILITIES } from "@/modules/registry";
 import { fetchOrder, fetchPayment, markPaymentConfirmed } from "./client";
 import { CAPTURED, CONFIRMED_NOTE } from "./constants";
 import { saleMails } from "./mails";
@@ -44,7 +45,10 @@ export async function confirmPayment(
   );
   if (!order) return { isConfirmed: false, reason: "order-unreadable" };
 
-  const { receipt, notice } = await saleMails(toSale(payment, order));
+  const sale = toSale(payment, order);
+  if (!(await record(sale)))
+    return { isConfirmed: false, reason: "record-failed" };
+  const { receipt, notice } = await saleMails(sale);
   const [toBuyer, toOrganisers] = await Promise.allSettled([
     deliverMail(receipt),
     deliverMail(notice),
@@ -71,6 +75,33 @@ export async function confirmPayment(
     );
   });
   return { isConfirmed: true };
+}
+
+/**
+ * Hands the sale to storage before any mail goes out. Storage ignores a repeat of
+ * the same payment, so when it fails the webhook can ask Razorpay to redeliver
+ * with nothing sent yet. True when stored or when no storage module is present.
+ */
+async function record(sale: SaleType): Promise<boolean> {
+  try {
+    await CAPABILITIES.recordSale?.({
+      paymentId: sale.paymentId,
+      orderId: sale.orderId,
+      passId: sale.passId,
+      passName: sale.passName,
+      amount: sale.amount,
+      buyerName: sale.buyer.name,
+      buyerEmail: sale.buyer.email,
+      buyerPhone: sale.buyer.phone,
+    });
+    return true;
+  } catch (error) {
+    console.error(
+      `[razorpay] could not record ${sale.paymentId}; Razorpay will redeliver`,
+      error,
+    );
+    return false;
+  }
 }
 
 async function read<T>(
@@ -100,6 +131,7 @@ function toSale(
       email: notes.email ?? "",
       phone: notes.phone ?? "",
     },
+    passId: notes.pass ?? "",
     passName: findPass(notes.pass ?? "")?.name ?? "Pass",
     paymentId: payment.id,
     orderId: order.id,

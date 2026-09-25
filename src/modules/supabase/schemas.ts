@@ -28,3 +28,10 @@ export const ProfileSchema = z.object({
  * open redirect rather than merely hard to.
  */
 export const NextPathSchema = z.literal("/dashboard").catch("/dashboard");
+
+export const OrderRowSchema = z.object({
+  payment_id: z.string(),
+  pass_name: z.string(),
+  amount: z.number(),
+  created_at: z.string(),
+});

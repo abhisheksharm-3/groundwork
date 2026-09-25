@@ -1,6 +1,6 @@
 /** The signed-in user as the app sees it, the auth forms' results, and the profile row. */
 import type { z } from "zod";
-import type { ProfileSchema } from "./schemas";
+import type { OrderRowSchema, ProfileSchema } from "./schemas";
 
 export type ProfileType = z.infer<typeof ProfileSchema>;
 
@@ -22,3 +22,6 @@ export type AuthStateType =
 export type AuthModeType = "sign-in" | "sign-up";
 
 export type AuthFormPropsType = { mode: AuthModeType };
+
+/** One of the signed-in buyer's passes, as the dashboard lists it. */
+export type OrderType = z.infer<typeof OrderRowSchema>;

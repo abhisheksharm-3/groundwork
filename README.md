@@ -88,6 +88,11 @@ money. Test and live keys differ only in value.
 3. Authentication, URL Configuration: add `https://<domain>/auth/callback`.
 4. For Google: Authentication, Providers, Google, with the client id and secret from
    Google Cloud.
+5. For a record of sales, put the secret key (Project Settings, API Keys) into
+   `SUPABASE_SECRET_KEY`. With Razorpay also kept, the webhook then writes every
+   confirmed payment to the `orders` table before any mail goes out, buyers see their
+   passes on the dashboard, and the organisers' list of who is coming is that table:
+   filter or export it to CSV from the Supabase table editor.
 <!-- /@module supabase -->
 
 <!-- @module email -->
