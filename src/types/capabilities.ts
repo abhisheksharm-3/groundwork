@@ -21,6 +21,6 @@ export type ContactMessageType = {
 export type CapabilitiesType = {
   /** Resolves true when a transport accepted the mail, false when none is configured. Throws on a transport failure. */
   sendMail?: (mail: MailType) => Promise<boolean>;
-  /** Stores a contact message. Throws on a storage failure. */
-  saveContactMessage?: (message: ContactMessageType) => Promise<void>;
+  /** Resolves true when the message was stored, false when storage is not configured. Throws on a storage failure. */
+  saveContactMessage?: (message: ContactMessageType) => Promise<boolean>;
 };

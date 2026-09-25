@@ -11,11 +11,15 @@ import {
   RAZORPAY_CSP,
   RAZORPAY_CSP_EXEMPTION,
 } from "./src/modules/razorpay/csp.ts";
+/** @module supabase */
+import { SUPABASE_CSP } from "./src/modules/supabase/csp.ts";
 import type { CspExemptionType, CspSourcesType } from "./src/types/security.ts";
 
 const MODULE_CSP: readonly CspSourcesType[] = [
   /** @module razorpay */
   RAZORPAY_CSP,
+  /** @module supabase */
+  SUPABASE_CSP,
 ];
 
 const CSP_EXEMPTIONS: readonly CspExemptionType[] = [

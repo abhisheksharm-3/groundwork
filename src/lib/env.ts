@@ -11,6 +11,8 @@ import { z } from "zod";
 import { EMAIL_ENV } from "@/modules/email/env";
 /** @module razorpay */
 import { RAZORPAY_ENV } from "@/modules/razorpay/env";
+/** @module supabase */
+import { SUPABASE_ENV } from "@/modules/supabase/env";
 
 const EnvSchema = z.object({
   NEXT_PUBLIC_SITE_URL: z.url(),
@@ -18,6 +20,8 @@ const EnvSchema = z.object({
   ...EMAIL_ENV,
   /** @module razorpay */
   ...RAZORPAY_ENV,
+  /** @module supabase */
+  ...SUPABASE_ENV,
 });
 
 export const ENV = parseEnv();

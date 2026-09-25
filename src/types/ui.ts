@@ -41,4 +41,10 @@ export type FormFieldPropsType = {
   children: (props: FormControlPropsType) => ReactNode;
 };
 
-export type PassPricePropsType = { pass: PassType };
+/** Any component that renders one pass. */
+export type PassPropsType = { pass: PassType };
+
+/** Any component whose only prop is what it wraps. */
+export type ChildrenPropsType = { children: ReactNode };
+
+export type NavLinksPropsType = { pathname: string };

@@ -1,5 +1,4 @@
 /** Razorpay's responses as this module reads them, and the shapes the checkout flow passes around. */
-import type { ReactNode } from "react";
 import type { z } from "zod";
 import type { RazorpayOrderSchema, RazorpayPaymentSchema } from "./schemas";
 
@@ -70,4 +69,8 @@ export type SaleEmailPropsType = { sale: SaleType };
 
 export type CheckoutFormPropsType = { passId: string; passName: string };
 
-export type CheckoutBoundaryPropsType = { children: ReactNode };
+export type PaymentStatusPropsType = {
+  searchParams: Promise<PaymentReturnType>;
+};
+
+export type CheckoutParamsType = { pass: string };

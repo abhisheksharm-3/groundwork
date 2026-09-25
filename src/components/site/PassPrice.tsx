@@ -9,11 +9,9 @@ import type { ReactNode } from "react";
 import { formatDayMonth, formatPrice } from "@/lib/format";
 import { isEarlyRate, priceFor } from "@/lib/pricing";
 import { SITE } from "@/lib/site-config";
-import type { PassPricePropsType } from "@/types/ui";
+import type { PassPropsType } from "@/types/ui";
 
-export async function PassPrice({
-  pass,
-}: PassPricePropsType): Promise<ReactNode> {
+export async function PassPrice({ pass }: PassPropsType): Promise<ReactNode> {
   await connection();
   const now = Date.now();
   const price = priceFor(pass, now);

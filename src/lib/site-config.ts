@@ -90,4 +90,6 @@ export const SITE: SiteConfigType = {
   earlyUntil: "2026-12-31T23:59:59+05:30",
   /** @module razorpay */
   checkout: (passId) => `/checkout/${passId}`,
+  /** @module supabase */
+  account: { href: "/dashboard", label: "Your account" },
 };

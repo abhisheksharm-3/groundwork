@@ -12,6 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { SITE } from "@/lib/site-config";
+import type { NavLinksPropsType } from "@/types/ui";
 import { actionStyles } from "./action-styles";
 
 const ORDER: readonly string[] = SITE.nav.map((item) => item.href);
@@ -70,7 +71,7 @@ export function SiteHeader(): ReactNode {
   );
 }
 
-function NavLinks({ pathname }: { pathname: string }): ReactNode {
+function NavLinks({ pathname }: NavLinksPropsType): ReactNode {
   const items = SITE.account ? [...SITE.nav, SITE.account] : SITE.nav;
   return (
     <ul className="flex flex-col gap-5 md:flex-row md:items-center md:gap-8">

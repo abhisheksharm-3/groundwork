@@ -11,7 +11,7 @@ import { PageTransition } from "@/components/site/PageTransition";
 import { PassPrice, PriceFallback } from "@/components/site/PassPrice";
 import { formatDayMonth } from "@/lib/format";
 import { SITE } from "@/lib/site-config";
-import type { PassType } from "@/types/site";
+import type { PassPropsType } from "@/types/ui";
 
 export const metadata: Metadata = {
   title: "Passes",
@@ -47,7 +47,7 @@ export default function PassesPage(): ReactNode {
   );
 }
 
-function PassTicket({ pass }: { pass: PassType }): ReactNode {
+function PassTicket({ pass }: PassPropsType): ReactNode {
   return (
     <li className="grid overflow-hidden rounded-lg bg-surface shadow-lift md:grid-cols-[1fr_minmax(16rem,22rem)]">
       <div className="p-8 md:p-12">
@@ -75,7 +75,7 @@ function PassTicket({ pass }: { pass: PassType }): ReactNode {
   );
 }
 
-function BuyLink({ pass }: { pass: PassType }): ReactNode {
+function BuyLink({ pass }: PassPropsType): ReactNode {
   if (!SITE.checkout) {
     return <ActionLink href="/contact">Ask about this pass</ActionLink>;
   }

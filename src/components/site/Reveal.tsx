@@ -13,8 +13,9 @@ import {
   useEffect,
   useRef,
 } from "react";
+import type { ChildrenPropsType } from "@/types/ui";
 
-export function Reveal({ children }: { children: ReactNode }): ReactNode {
+export function Reveal({ children }: ChildrenPropsType): ReactNode {
   const ref = useRef<FragmentInstance>(null);
 
   useEffect(() => {

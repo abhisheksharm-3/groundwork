@@ -7,8 +7,12 @@
 import type { CapabilitiesType } from "@/types/capabilities";
 /** @module email */
 import { sendMail } from "./email/send";
+/** @module supabase */
+import { saveContactMessage } from "./supabase/contact";
 
 export const CAPABILITIES: CapabilitiesType = {
   /** @module email */
   sendMail,
+  /** @module supabase */
+  saveContactMessage,
 };

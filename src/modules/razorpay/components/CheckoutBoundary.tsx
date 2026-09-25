@@ -9,10 +9,10 @@ import { catchError, type ErrorInfo } from "next/error";
 import type { ReactNode } from "react";
 import { actionStyles } from "@/components/site/action-styles";
 import { SITE } from "@/lib/site-config";
-import type { CheckoutBoundaryPropsType } from "../types";
+import type { ChildrenPropsType } from "@/types/ui";
 
 function CheckoutFallback(
-  { children: _widget }: CheckoutBoundaryPropsType,
+  { children: _widget }: ChildrenPropsType,
   { retry }: ErrorInfo,
 ): ReactNode {
   return (

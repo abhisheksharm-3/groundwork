@@ -99,11 +99,9 @@ function outcome(
   return { status: "sent" };
 }
 
-/** True when a storage module kept the message; false when none is installed. */
+/** True when a storage module kept the message; false when none is installed or configured. */
 async function storeMessage(message: ContactMessageType): Promise<boolean> {
-  if (!CAPABILITIES.saveContactMessage) return false;
-  await CAPABILITIES.saveContactMessage(message);
-  return true;
+  return (await CAPABILITIES.saveContactMessage?.(message)) ?? false;
 }
 
 /** What the visitor typed, echoed back so a failed submit never loses their message. Capped, and only ever re-rendered as text. */

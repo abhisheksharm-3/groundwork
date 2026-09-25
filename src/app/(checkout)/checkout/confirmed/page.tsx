@@ -9,7 +9,7 @@ import { ActionLink } from "@/components/site/ActionLink";
 import { PageTransition } from "@/components/site/PageTransition";
 import { SITE } from "@/lib/site-config";
 import { verifyPaymentSignature } from "@/modules/razorpay/client";
-import type { PaymentReturnType } from "@/modules/razorpay/types";
+import type { PaymentStatusPropsType } from "@/modules/razorpay/types";
 
 export const metadata: Metadata = { title: "Payment received" };
 
@@ -36,9 +36,7 @@ export default function ConfirmedPage({
 
 async function PaymentStatus({
   searchParams,
-}: {
-  searchParams: Promise<PaymentReturnType>;
-}): Promise<ReactNode> {
+}: PaymentStatusPropsType): Promise<ReactNode> {
   const { order = "", payment = "", signature = "" } = await searchParams;
   const isVerified = verifyPaymentSignature(order, payment, signature);
 

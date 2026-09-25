@@ -13,8 +13,9 @@ import { SITE } from "@/lib/site-config";
 import { publicKeyId } from "@/modules/razorpay/client";
 import { CheckoutBoundary } from "@/modules/razorpay/components/CheckoutBoundary";
 import { CheckoutForm } from "@/modules/razorpay/components/CheckoutForm";
+import type { CheckoutParamsType } from "@/modules/razorpay/types";
 
-export function generateStaticParams(): { pass: string }[] {
+export function generateStaticParams(): CheckoutParamsType[] {
   return SITE.passes.map((pass) => ({ pass: pass.id }));
 }
 

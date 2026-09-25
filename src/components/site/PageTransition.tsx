@@ -5,6 +5,7 @@
  * persists across navigations and its enter and exit never fire.
  */
 import { type ReactNode, ViewTransition } from "react";
+import type { ChildrenPropsType } from "@/types/ui";
 
 const DIRECTIONS = {
   "nav-forward": "nav-forward",
@@ -12,11 +13,7 @@ const DIRECTIONS = {
   default: "none",
 };
 
-export function PageTransition({
-  children,
-}: {
-  children: ReactNode;
-}): ReactNode {
+export function PageTransition({ children }: ChildrenPropsType): ReactNode {
   return (
     <ViewTransition enter={DIRECTIONS} exit={DIRECTIONS} default="none">
       {children}
