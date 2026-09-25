@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
+import { TrustedTypesPolicy } from "@/components/site/TrustedTypesPolicy";
 import { ENV } from "@/lib/env";
 import { SITE } from "@/lib/site-config";
 import { FONT_VARIABLES } from "@/styles/fonts";
@@ -33,6 +34,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">): ReactNode {
   return (
     <html lang={SITE.locale} className={FONT_VARIABLES}>
+      <head>
+        <TrustedTypesPolicy />
+      </head>
       <body>
         <a
           href="#main"

@@ -1,7 +1,6 @@
 /** What a contact message must be before anything reads it. The messages are the copy shown beside each field. */
 import { z } from "zod";
-
-export const MESSAGE_MAX = 2000;
+import { MESSAGE_MAX } from "./constants";
 
 export const ContactSchema = z.object({
   name: z

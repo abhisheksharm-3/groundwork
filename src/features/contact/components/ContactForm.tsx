@@ -11,7 +11,7 @@ import { FormField } from "@/components/site/FormField";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { sendContactAction } from "../actions";
-import { MESSAGE_MAX } from "../schemas";
+import { MESSAGE_MAX } from "../constants";
 import type { ContactFieldType, ContactStateType } from "../types";
 
 const INITIAL: ContactStateType = { status: "idle" };

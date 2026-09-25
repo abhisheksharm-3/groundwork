@@ -12,6 +12,7 @@ export const RAZORPAY_CSP: CspSourcesType = {
     "https://lumberjack.razorpay.com",
   ],
   "img-src": ["https://cdn.razorpay.com"],
+  "trusted-types": ["razorpay-checkout"],
 };
 
 /**

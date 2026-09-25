@@ -40,6 +40,8 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackRustReactCompiler: true,
     sri: { algorithm: "sha256" },
+    /** On only for the e2e build, which sets NEXT_E2E; a real deployment never exposes it. */
+    exposeTestingApiInProductionBuild: process.env.NEXT_E2E === "1",
   },
   async headers() {
     return routeHeaders(CSP_SOURCES, CSP_EXEMPTIONS);

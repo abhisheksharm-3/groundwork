@@ -33,6 +33,7 @@ const CORE: Record<string, readonly string[]> = {
   "form-action": ["'self'"],
   "frame-ancestors": ["'none'"],
   "require-trusted-types-for": ["'script'"],
+  "trusted-types": ["default", "nextjs"],
 };
 
 /** React's development build needs eval to rebuild server error stacks in the browser. Add it only in dev. */
