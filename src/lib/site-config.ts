@@ -31,7 +31,7 @@ type SiteConfigType = {
   locale: string;
   currency: string;
   timeZone: string;
-  themeColor: string;
+  chrome: { ground: string; ink: string; accent: string; quiet: string };
   dates: { start: string; end: string; label: string };
   venue: { name: string; address: string; city: string };
   contact: { email: string; phone: string };
@@ -52,10 +52,17 @@ export const SITE: SiteConfigType = {
   currency: "INR",
   timeZone: "Asia/Kolkata",
   /**
-   * The browser chrome color. A literal because the theme-color meta tag cannot
-   * read a CSS variable; keep it equal to `--color-brand-deep` in tokens.css.
+   * The brand in sRGB hex, for the two places CSS cannot reach: the browser's
+   * theme-color and the generated share card, whose renderer reads neither CSS
+   * variables nor OKLCH. Keep them equal to `brand-deep`, `on-brand`, `action` and
+   * `on-brand-soft` in tokens.css; `/brand` rewrites both together.
    */
-  themeColor: "oklch(0.27 0.09 268)",
+  chrome: {
+    ground: "#142152",
+    ink: "#f8f4eb",
+    accent: "#f6c330",
+    quiet: "#c2cadf",
+  },
   dates: {
     start: "2027-02-20",
     end: "2027-02-21",
