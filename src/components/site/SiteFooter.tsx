@@ -56,6 +56,27 @@ export function SiteFooter(): ReactNode {
           </nav>
         </div>
       </div>
+      <div className="border-t border-on-brand/10">
+        <div className="page flex flex-col gap-3 py-6 md:flex-row md:items-center md:justify-between">
+          <p className="text-sm text-on-brand-soft">
+            {SITE.organiser.legalName}
+          </p>
+          <nav aria-label="Policies">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              {SITE.legal.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-on-brand-soft hover:text-on-brand"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </div>
     </footer>
   );
 }

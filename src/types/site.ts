@@ -14,6 +14,16 @@ export type PassType = {
 
 export type NavItemType = { href: Route; label: string };
 
+/** A service that handles visitors' data on the site's behalf, named in the privacy policy. */
+export type ProcessorType = { name: string; purpose: string; location: string };
+
+/** Days before the first day of the event. Inside `halfUntilDays` nothing is refunded. */
+export type RefundPolicyType = {
+  fullUntilDays: number;
+  halfUntilDays: number;
+  processingDays: string;
+};
+
 export type SiteConfigType = {
   name: string;
   edition: string;
@@ -26,6 +36,12 @@ export type SiteConfigType = {
   dates: { start: string; end: string; label: string };
   venue: { name: string; address: string; city: string };
   contact: { email: string; phone: string };
+  /** The legal entity behind the site, as the payment gateway and the policies must name it. */
+  organiser: { legalName: string; address: string; city: string };
+  policiesUpdated: string;
+  processors: readonly ProcessorType[];
+  refunds: RefundPolicyType;
+  legal: readonly NavItemType[];
   nav: readonly NavItemType[];
   passes: readonly PassType[];
   earlyUntil: string;

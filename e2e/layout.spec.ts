@@ -1,12 +1,13 @@
 /**
- * Every page fits the viewport it is given, logs nothing to the console, and has no
+ * Every page in the nav and every policy page fits the viewport it is given, logs nothing to the console, and has no
  * WCAG 2.2 AA violation axe can detect. Sideways scroll at phone width is the most
  * common way a fluid layout breaks; axe catches contrast, names and landmarks.
  */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { SITE } from "../src/lib/site-config.ts";
 
-for (const path of ["/", "/about", "/pricing", "/contact"]) {
+for (const { href: path } of [...SITE.nav, ...SITE.legal]) {
   test(`${path} fits the viewport, logs nothing and passes axe`, async ({
     page,
   }) => {

@@ -6,7 +6,8 @@
       "paths": [
         "src/modules/razorpay",
         "src/app/(checkout)",
-        "src/app/api/razorpay"
+        "src/app/api/razorpay",
+        "src/app/(policies)"
       ],
       "dependencies": ["@react-email/components"],
       "keywords": ["razorpay"],
@@ -36,7 +37,13 @@
       "parent": "email",
       "paths": ["src/modules/email/resend.ts"],
       "dependencies": [],
-      "keywords": ["resend"],
+      "keywords": [
+        "resendTransport",
+        "RESEND_API_KEY",
+        "api.resend.com",
+        "email/resend",
+        "resend.com"
+      ],
       "scripts": []
     },
     "email-smtp": {

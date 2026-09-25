@@ -43,6 +43,52 @@ export const SITE: SiteConfigType = {
     city: "Ahmedabad",
   },
   contact: { email: "hello@example.com", phone: "+91 79 0000 0000" },
+  organiser: {
+    legalName: "Weft Craft Trust",
+    address: "Naroda Road, Ahmedabad, Gujarat 380025",
+    city: "Ahmedabad",
+  },
+  policiesUpdated: "2026-09-25",
+  processors: [
+    /** @module razorpay */
+    {
+      name: "Razorpay",
+      purpose: "takes card, UPI and net banking payments",
+      location: "India",
+    },
+    /** @module supabase */
+    {
+      name: "Supabase",
+      purpose: "stores accounts, pass records and contact messages",
+      location: "the region the project runs in",
+    },
+    /** @module email-resend */
+    {
+      name: "Resend",
+      purpose: "delivers email",
+      location: "the United States",
+    },
+    /** @module email-smtp */
+    {
+      name: "Our email provider",
+      purpose: "delivers email",
+      location: "the provider's own data centres",
+    },
+  ],
+  refunds: {
+    fullUntilDays: 14,
+    halfUntilDays: 3,
+    processingDays: "5 to 7 working days",
+  },
+  legal: [
+    { href: "/privacy", label: "Privacy" },
+    /** @module razorpay */
+    { href: "/terms", label: "Terms" },
+    /** @module razorpay */
+    { href: "/refunds", label: "Refunds and cancellation" },
+    /** @module razorpay */
+    { href: "/delivery", label: "Delivery" },
+  ],
   nav: [
     { href: "/", label: "Home" },
     { href: "/about", label: "Programme" },
