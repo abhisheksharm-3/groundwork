@@ -8,3 +8,6 @@ next-env.d.ts
 # Polaris per-session process state, not part of the template
 .polaris/runs/
 .polaris/work/
+
+/test-results
+/playwright-report
