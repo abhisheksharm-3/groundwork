@@ -117,8 +117,8 @@ updating the manifest in the same commit. `npm run check` greps for this.
 - Next 16.3 with `cacheComponents` and `partialPrefetching`: define loading shells
   inline with Suspense or `'use cache'`. Do not add `loading.tsx` files.
 - React Compiler is on. Do not hand-write `useMemo`, `useCallback` or `memo`.
-- `next dev` rewrites the `nextjs-agent-rules` block in `AGENTS.md`. Commit it with
-  your work; deleting it from a diff only recreates the change.
+- `next dev` writes the `nextjs-agent-rules` block at the end of this file. Commit it
+  with your work; deleting it from a diff only recreates the change.
 - Read `node_modules/next/dist/docs/` before writing Next-specific code. This version
   post-dates most training data.
 - A literal hex or px value in a component is a bug. Everything reads `tokens.css`.
@@ -126,9 +126,11 @@ updating the manifest in the same commit. `npm run check` greps for this.
   webhook, never the browser callback.
 - `src/modules/supabase/admin.ts` holds the service-role key and is the only file
   allowed to read it.
-- CSP is hash-based via `experimental.sri`, set in `next.config.ts`. Do not add a
-  per-request nonce: it forces every page dynamic and kills the static shell that
-  `partialPrefetching` and the `instant()` test depend on.
+- CSP is static, built in `src/lib/security-headers.ts`. Scripts need `'unsafe-inline'`:
+  the App Router's RSC payload and Suspense reveals are inline scripts, and
+  `script-src 'self'` stops hydration (measured). Never add a per-request nonce: it
+  forces every page dynamic and kills the static shell. A module adds CSP hosts
+  through its own `csp.ts`, imported by `next.config.ts`.
 - `proxy.ts` only refreshes the Supabase session. Return the `supabaseResponse`
   unmodified and use the `getAll`/`setAll` cookie adapter — the deprecated
   `get`/`set`/`remove` one breaks session refresh with no error.
@@ -136,3 +138,13 @@ updating the manifest in the same commit. `npm run check` greps for this.
   ignores `notFound()`. Do not wrap it in `catchError`.
 - Check files (`*.check.mts`) run under Node's type stripping, which does not resolve
   the `@/` alias. Import by relative path or they fail at run time.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
