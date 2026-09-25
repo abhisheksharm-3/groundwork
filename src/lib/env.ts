@@ -9,6 +9,8 @@ import "server-only";
 import { z } from "zod";
 /** @module email */
 import { EMAIL_ENV } from "@/modules/email/env";
+/** @module monitoring */
+import { MONITORING_ENV } from "@/modules/monitoring/env";
 /** @module razorpay */
 import { RAZORPAY_ENV } from "@/modules/razorpay/env";
 /** @module supabase */
@@ -22,6 +24,8 @@ const EnvSchema = z.object({
   ...RAZORPAY_ENV,
   /** @module supabase */
   ...SUPABASE_ENV,
+  /** @module monitoring */
+  ...MONITORING_ENV,
 });
 
 export const ENV = parseEnv();

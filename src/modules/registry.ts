@@ -7,6 +7,8 @@
 import type { CapabilitiesType } from "@/types/capabilities";
 /** @module email */
 import { sendMail } from "./email/send";
+/** @module monitoring */
+import { reportProblem } from "./monitoring/report";
 /** @module supabase */
 import { saveContactMessage } from "./supabase/contact";
 /** @module supabase */
@@ -19,4 +21,6 @@ export const CAPABILITIES: CapabilitiesType = {
   saveContactMessage,
   /** @module supabase */
   recordSale,
+  /** @module monitoring */
+  reportProblem,
 };

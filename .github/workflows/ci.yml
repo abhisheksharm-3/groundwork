@@ -43,11 +43,11 @@ jobs:
       fail-fast: false
       matrix:
         answers:
-          - "acme y y y resend acme"
-          - "acme n y y smtp acme"
-          - "acme y n y resend acme"
-          - "acme y y n acme"
-          - "acme n n n acme"
+          - "acme y y y y resend acme"
+          - "acme n y y n smtp acme"
+          - "acme y n y y resend acme"
+          - "acme y y n n acme"
+          - "acme n n n n acme"
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7

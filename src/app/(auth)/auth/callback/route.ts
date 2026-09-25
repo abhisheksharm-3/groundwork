@@ -4,6 +4,7 @@
  * the visitor goes on to a same-site path only, never to an address from the URL.
  */
 import { NextResponse } from "next/server";
+import { reportProblem } from "@/lib/report-problem";
 import { NextPathSchema } from "@/modules/supabase/schemas";
 import { createSupabase } from "@/modules/supabase/server";
 
@@ -16,7 +17,7 @@ export async function GET(request: Request): Promise<NextResponse> {
   if (code && supabase) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) return NextResponse.redirect(new URL(next, url.origin));
-    console.error("[supabase] code exchange failed:", error.message);
+    reportProblem("[supabase] code exchange failed:", error.message);
   }
   return NextResponse.redirect(new URL("/sign-in?error=callback", url.origin));
 }

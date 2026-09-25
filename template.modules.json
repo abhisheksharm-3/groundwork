@@ -54,6 +54,13 @@
       "keywords": ["nodemailer", "smtp"],
       "scripts": []
     },
+    "monitoring": {
+      "label": "Error alerts with Sentry",
+      "paths": ["src/modules/monitoring", "src/instrumentation.ts"],
+      "dependencies": ["@sentry/nextjs"],
+      "scripts": [],
+      "keywords": ["sentry", "modules/monitoring", "MONITORING_ENV"]
+    },
     "template": {
       "label": "This template's own setup tooling",
       "alwaysDrop": true,

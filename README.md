@@ -19,7 +19,7 @@ npm run setup
 
 Setup asks for a project name and which modules to keep, removes the rest from
 every file they touch, runs the full check, and replaces the history with a single
-commit. Answers can be piped, one per line: `printf '%s\n' acme y n y resend acme | npm run setup`.
+commit. Answers can be piped, one per line, in the order the questions appear: `printf '%s\n' acme y n y n resend acme | npm run setup`.
 
 If a removed module is still referenced somewhere, setup stops, names the file and
 line, and leaves the tree as it is so the seam can be fixed. Nothing is rolled back.
@@ -29,6 +29,7 @@ line, and leaves the tree as it is so the seam can be fixed. Nothing is rolled b
 | `razorpay` | Passes bought through Razorpay Checkout, confirmed by webhook, with an emailed receipt |
 | `supabase` | Email and Google sign-in, a protected dashboard, and contact messages stored with RLS |
 | `email` | Mail through Resend or any SMTP server; without it, mail is logged |
+| `monitoring` | Server errors and payment failures raised as Sentry alerts |
 
 The contact form is not a module. It always works: it mails when email is set up,
 stores when Supabase is, and logs when neither is.

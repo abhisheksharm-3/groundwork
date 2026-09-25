@@ -11,6 +11,7 @@ import { clientAddress } from "@/lib/client-address";
 import { deliverMail } from "@/lib/deliver-mail";
 import { firstFieldErrors } from "@/lib/field-errors";
 import { createRateLimiter } from "@/lib/rate-limit";
+import { reportProblem } from "@/lib/report-problem";
 import { SITE } from "@/lib/site-config";
 import { CAPABILITIES } from "@/modules/registry";
 import type { ContactMessageType } from "@/types/capabilities";
@@ -84,7 +85,7 @@ function outcome(
 ): ContactStateType {
   for (const result of [mail, storage]) {
     if (result.status === "rejected")
-      console.error("[contact] a channel failed:", result.reason);
+      reportProblem("[contact] a channel failed:", result.reason);
   }
   const isMailed = mail.status === "fulfilled" && mail.value === true;
   const isStored = storage.status === "fulfilled" && storage.value;

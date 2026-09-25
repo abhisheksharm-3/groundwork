@@ -11,6 +11,7 @@
 import "server-only";
 import { deliverMail } from "@/lib/deliver-mail";
 import { findPass } from "@/lib/pricing";
+import { reportProblem } from "@/lib/report-problem";
 import { CAPABILITIES } from "@/modules/registry";
 import { fetchOrder, fetchPayment, markPaymentConfirmed } from "./client";
 import { CAPTURED, CONFIRMED_NOTE } from "./constants";
@@ -33,7 +34,7 @@ export async function confirmPayment(
   if (payment.notes[CONFIRMED_NOTE])
     return { isConfirmed: false, reason: "already-confirmed" };
   if (payment.status !== CAPTURED) {
-    console.error(
+    reportProblem(
       `[razorpay] payment ${paymentId} is "${payment.status}", not "${CAPTURED}". Check Settings -> Payment capture is Automatic.`,
     );
     return { isConfirmed: false, reason: "not-captured" };
@@ -54,7 +55,7 @@ export async function confirmPayment(
     deliverMail(notice),
   ]);
   if (toBuyer.status === "rejected" && toOrganisers.status === "rejected") {
-    console.error(
+    reportProblem(
       `[razorpay] no mail delivered for ${paymentId}; left unconfirmed so Razorpay retries`,
       toBuyer.reason,
     );
@@ -62,14 +63,14 @@ export async function confirmPayment(
   }
   for (const result of [toBuyer, toOrganisers]) {
     if (result.status === "rejected")
-      console.error(
+      reportProblem(
         `[razorpay] one confirmation mail failed for ${paymentId}`,
         result.reason,
       );
   }
 
   await markPaymentConfirmed(paymentId).catch((error: unknown) => {
-    console.error(
+    reportProblem(
       `[razorpay] mails sent but ${paymentId} not stamped; a retry may duplicate them`,
       error,
     );
@@ -96,7 +97,7 @@ async function record(sale: SaleType): Promise<boolean> {
     });
     return true;
   } catch (error) {
-    console.error(
+    reportProblem(
       `[razorpay] could not record ${sale.paymentId}; Razorpay will redeliver`,
       error,
     );
@@ -111,7 +112,7 @@ async function read<T>(
   try {
     return await load();
   } catch (error) {
-    console.error(
+    reportProblem(
       `[razorpay] CONFIRM FAILED, ${what} unreadable. The Razorpay dashboard is the only record.`,
       error,
     );

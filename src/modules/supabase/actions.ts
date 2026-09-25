@@ -11,6 +11,7 @@ import { clientAddress } from "@/lib/client-address";
 import { ENV } from "@/lib/env";
 import { firstFieldErrors } from "@/lib/field-errors";
 import { createRateLimiter } from "@/lib/rate-limit";
+import { reportProblem } from "@/lib/report-problem";
 import { SITE } from "@/lib/site-config";
 import {
   CredentialsSchema,
@@ -86,7 +87,7 @@ export async function signUpAction(
     options: { emailRedirectTo: callbackUrl("/dashboard") },
   });
   if (error) {
-    console.error("[supabase] sign-up failed:", error.message);
+    reportProblem("[supabase] sign-up failed:", error.message);
     return {
       status: "failed",
       message: "We could not create that account. Try signing in instead.",
@@ -107,7 +108,7 @@ export async function signInWithGoogleAction(
     options: { redirectTo: callbackUrl(next) },
   });
   if (error || !data.url) {
-    console.error("[supabase] Google sign-in could not start:", error?.message);
+    reportProblem("[supabase] Google sign-in could not start:", error?.message);
     redirect("/sign-in?error=google");
   }
   if (!isHttpsUrl(data.url)) redirect("/sign-in?error=google");
@@ -143,7 +144,7 @@ export async function updateDisplayNameAction(
     .update({ display_name: parsed.data.displayName })
     .eq("id", user.id);
   if (error) {
-    console.error("[supabase] profile update failed:", error.message);
+    reportProblem("[supabase] profile update failed:", error.message);
     return { status: "failed", message: "That did not save. Try again." };
   }
   return { status: "saved" };

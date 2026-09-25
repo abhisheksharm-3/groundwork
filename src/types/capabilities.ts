@@ -37,4 +37,6 @@ export type CapabilitiesType = {
   saveContactMessage?: (message: ContactMessageType) => Promise<boolean>;
   /** Stores a confirmed sale once; a repeat of the same payment is ignored. False when storage is not configured. Throws on a storage failure. */
   recordSale?: (sale: SaleRecordType) => Promise<boolean>;
+  /** Raises an alert for a failure someone should look at. Never throws. */
+  reportProblem?: (message: string, error?: unknown) => void;
 };

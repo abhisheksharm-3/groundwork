@@ -10,6 +10,7 @@ import { clientAddress } from "@/lib/client-address";
 import { firstFieldErrors } from "@/lib/field-errors";
 import { findPass } from "@/lib/pricing";
 import { createRateLimiter } from "@/lib/rate-limit";
+import { reportProblem } from "@/lib/report-problem";
 import { SITE } from "@/lib/site-config";
 import { createOrder, publicKeyId } from "./client";
 import { amountPaise } from "./price";
@@ -45,7 +46,7 @@ export async function createOrderAction(
   }
   const keyId = publicKeyId();
   if (!keyId) {
-    console.error(
+    reportProblem(
       "[razorpay] refusing an order: RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET and RAZORPAY_WEBHOOK_SECRET must all be set",
     );
     return { status: "failed", message: UNAVAILABLE };
@@ -69,7 +70,7 @@ export async function createOrderAction(
       message: "Could not reach the payment gateway. Please try again.",
     };
   if (order.amount !== expected) {
-    console.error(
+    reportProblem(
       `[razorpay] order ${order.id} priced ${order.amount} paise, expected ${expected}`,
     );
     return {
@@ -98,7 +99,7 @@ async function openOrder(
       notes,
     });
   } catch (error) {
-    console.error("[razorpay] order creation failed:", error);
+    reportProblem("[razorpay] order creation failed:", error);
     return null;
   }
 }

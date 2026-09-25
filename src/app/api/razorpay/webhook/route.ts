@@ -7,6 +7,7 @@
  * event payment.captured, secret into RAZORPAY_WEBHOOK_SECRET.
  */
 
+import { reportProblem } from "@/lib/report-problem";
 import { verifyWebhookSignature } from "@/modules/razorpay/client";
 import { confirmPayment } from "@/modules/razorpay/confirm";
 import {
@@ -26,7 +27,7 @@ export async function POST(request: Request): Promise<Response> {
       request.headers.get("x-razorpay-signature") ?? "",
     )
   ) {
-    console.error("[razorpay] webhook signature mismatch");
+    reportProblem("[razorpay] webhook signature mismatch");
     return reply(400, "invalid signature");
   }
 
@@ -36,7 +37,7 @@ export async function POST(request: Request): Promise<Response> {
 
   const paymentId = event.data.payload?.payment?.entity.id;
   if (!paymentId) {
-    console.error(
+    reportProblem(
       `[razorpay] ${CAPTURED_EVENT} arrived with no payment id; every confirmation depends on it`,
     );
     return reply(503, "no payment id");
