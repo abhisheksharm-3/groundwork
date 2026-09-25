@@ -5,16 +5,12 @@
  * fonts to lean on: this renders its own document with the system face.
  */
 import type { ReactNode } from "react";
-
-type GlobalErrorPropsType = {
-  error: Error & { digest?: string };
-  retry: () => void;
-};
+import type { ErrorBoundaryPropsType } from "@/types/ui";
 
 export default function GlobalError({
   error,
   retry,
-}: GlobalErrorPropsType): ReactNode {
+}: ErrorBoundaryPropsType): ReactNode {
   return (
     <html lang="en">
       <body

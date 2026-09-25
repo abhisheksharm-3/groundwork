@@ -13,11 +13,7 @@
  * Styles allow `'unsafe-inline'` because next/image blur placeholders are inline
  * style attributes.
  */
-
-/** Extra sources a module needs, keyed by CSP directive. */
-export type CspSourcesType = Partial<Record<string, readonly string[]>>;
-
-type HeaderType = { key: string; value: string };
+import type { CspSourcesType, HeaderType } from "../types/security.ts";
 
 const CORE: Record<string, readonly string[]> = {
   "default-src": ["'self'"],

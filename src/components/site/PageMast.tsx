@@ -1,11 +1,6 @@
 /** The drenched opening band of an inner page, closed by the selvedge. */
 import type { ReactNode } from "react";
-
-type PageMastPropsType = {
-  eyebrow: string;
-  title: string;
-  lede: string;
-};
+import type { PageMastPropsType } from "@/types/ui";
 
 export function PageMast({
   eyebrow,

@@ -9,19 +9,14 @@ import { PageMast } from "@/components/site/PageMast";
 import { PageTransition } from "@/components/site/PageTransition";
 import { Reveal } from "@/components/site/Reveal";
 import { SITE } from "@/lib/site-config";
+import type { ProgrammeDayType } from "@/types/site";
 
 export const metadata: Metadata = {
   title: "Programme",
   description: `Two days of talks, open floors and hands-on sessions at ${SITE.venue.name}, ${SITE.dates.label}.`,
 };
 
-type SessionType = { time: string; title: string; where: string };
-
-const DAYS: readonly {
-  day: string;
-  date: string;
-  sessions: readonly SessionType[];
-}[] = [
+const DAYS: readonly ProgrammeDayType[] = [
   {
     day: "Saturday",
     date: "20 February",

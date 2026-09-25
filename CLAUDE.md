@@ -112,6 +112,14 @@ folder, its route paths (Razorpay has two, Supabase three), its `registry.ts` li
 silently — the strip succeeds and the build fails later. Adding to a module means
 updating the manifest in the same commit. `npm run check` greps for this.
 
+## One kind of thing per file
+
+Types live only in types files: `src/features/<name>/types.ts`,
+`src/modules/<name>/types.ts`, or `src/types/` when more than one feature uses them.
+A schema file holds schemas, an action file holds actions, a component file holds
+components, a page holds a page. No `type` declaration anywhere else, including a
+component's own props type.
+
 ## Gotchas
 
 - Next 16.3 with `cacheComponents` and `partialPrefetching`: define loading shells

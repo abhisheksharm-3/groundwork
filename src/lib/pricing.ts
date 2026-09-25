@@ -3,7 +3,8 @@
  * decided: the passes page and the Razorpay order action both call it, so the
  * page can never quote a price the order will not charge.
  */
-import { type PassType, SITE } from "./site-config.ts";
+import type { PassType } from "../types/site.ts";
+import { SITE } from "./site-config.ts";
 
 const EARLY_UNTIL = Date.parse(SITE.earlyUntil);
 

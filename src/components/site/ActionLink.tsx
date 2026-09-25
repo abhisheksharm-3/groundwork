@@ -1,17 +1,10 @@
 /** A link that reads as a button: the site's calls to action. */
 
 import { cn } from "cn";
-import type { Route } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { type ActionVariantType, actionStyles } from "./action-styles";
-
-type ActionLinkPropsType = {
-  href: Route;
-  variant?: ActionVariantType;
-  className?: string;
-  children: ReactNode;
-};
+import type { ActionLinkPropsType } from "@/types/ui";
+import { actionStyles } from "./action-styles";
 
 export function ActionLink({
   href,

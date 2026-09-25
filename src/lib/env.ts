@@ -12,11 +12,9 @@ const EnvSchema = z.object({
   NEXT_PUBLIC_SITE_URL: z.url(),
 });
 
-export type EnvType = z.infer<typeof EnvSchema>;
+export const ENV = parseEnv();
 
-export const ENV: EnvType = parseEnv();
-
-function parseEnv(): EnvType {
+function parseEnv(): z.infer<typeof EnvSchema> {
   const result = EnvSchema.safeParse(process.env);
   if (result.success) return result.data;
   const names = result.error.issues

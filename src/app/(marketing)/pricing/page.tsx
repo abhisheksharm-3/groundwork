@@ -11,7 +11,8 @@ import { PageMast } from "@/components/site/PageMast";
 import { PageTransition } from "@/components/site/PageTransition";
 import { formatDayMonth, formatPrice } from "@/lib/format";
 import { isEarlyRate, priceFor } from "@/lib/pricing";
-import { type PassType, SITE } from "@/lib/site-config";
+import { SITE } from "@/lib/site-config";
+import type { PassType } from "@/types/site";
 
 export const metadata: Metadata = {
   title: "Passes",

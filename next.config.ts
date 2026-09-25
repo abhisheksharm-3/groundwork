@@ -5,11 +5,8 @@
  * third-party code adds its CSP sources through one marked import and entry.
  */
 import type { NextConfig } from "next";
-import {
-  buildCsp,
-  type CspSourcesType,
-  securityHeaders,
-} from "./src/lib/security-headers.ts";
+import { buildCsp, securityHeaders } from "./src/lib/security-headers.ts";
+import type { CspSourcesType } from "./src/types/security.ts";
 
 const MODULE_CSP: readonly CspSourcesType[] = [];
 

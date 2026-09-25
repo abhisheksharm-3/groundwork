@@ -9,16 +9,12 @@
 import type { ReactNode } from "react";
 import { actionStyles } from "@/components/site/action-styles";
 import { SITE } from "@/lib/site-config";
-
-type ErrorPropsType = {
-  error: Error & { digest?: string };
-  retry: () => void;
-};
+import type { ErrorBoundaryPropsType } from "@/types/ui";
 
 export default function RouteError({
   error,
   retry,
-}: ErrorPropsType): ReactNode {
+}: ErrorBoundaryPropsType): ReactNode {
   return (
     <section className="on-brand">
       <div className="page flex min-h-[70svh] flex-col justify-center py-section">

@@ -9,38 +9,7 @@
  * A property preceded by an `@module <name>` doc comment belongs to that
  * module, and `setup.ts` deletes it when the module is dropped.
  */
-import type { Route } from "next";
-
-/** A pass on sale. Prices are whole rupees; the order action converts to paise. */
-export type PassType = {
-  id: string;
-  name: string;
-  summary: string;
-  includes: readonly string[];
-  price: number;
-  earlyPrice: number;
-};
-
-type NavItemType = { href: Route; label: string };
-
-type SiteConfigType = {
-  name: string;
-  edition: string;
-  tagline: string;
-  description: string;
-  locale: string;
-  currency: string;
-  timeZone: string;
-  chrome: { ground: string; ink: string; accent: string; quiet: string };
-  dates: { start: string; end: string; label: string };
-  venue: { name: string; address: string; city: string };
-  contact: { email: string; phone: string };
-  nav: readonly NavItemType[];
-  passes: readonly PassType[];
-  earlyUntil: string;
-  checkout?: (passId: string) => Route;
-  account?: NavItemType;
-};
+import type { SiteConfigType } from "../types/site.ts";
 
 export const SITE: SiteConfigType = {
   name: "Weft",

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { PageMast } from "@/components/site/PageMast";
 import { PageTransition } from "@/components/site/PageTransition";
+import { ContactForm } from "@/features/contact/components/ContactForm";
 import { SITE } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -51,6 +52,9 @@ export default function ContactPage(): ReactNode {
             </dd>
           </div>
         </dl>
+        <div className="md:col-span-7 md:col-start-6">
+          <ContactForm />
+        </div>
       </section>
     </PageTransition>
   );

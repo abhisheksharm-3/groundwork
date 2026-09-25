@@ -1,7 +1,7 @@
 /** The home page: the gathering in one screen, its three crafts, the venue, and the way in. */
 
 import { cn } from "cn";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import blocks from "@/assets/images/blocks.jpg";
 import drying from "@/assets/images/drying.jpg";
@@ -13,15 +13,7 @@ import { PageTransition } from "@/components/site/PageTransition";
 import { Reveal } from "@/components/site/Reveal";
 import { formatDayMonth, formatPrice } from "@/lib/format";
 import { SITE } from "@/lib/site-config";
-
-type CraftType = {
-  floor: string;
-  title: string;
-  body: string;
-  image: StaticImageData;
-  alt: string;
-  layout: string;
-};
+import type { CraftType } from "@/types/site";
 
 const CRAFTS: readonly CraftType[] = [
   {
