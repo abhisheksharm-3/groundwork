@@ -11,3 +11,12 @@ export type LimiterOptionsType = { limit: number; windowMs: number };
 
 /** True while `key` is inside its allowance. `now` is injectable so the check file can control time. */
 export type RateLimiterType = (key: string, now?: number) => boolean;
+
+/** Directives a module needs removed on its own routes only, because third-party code there cannot comply. */
+export type CspExemptionType = {
+  source: string;
+  drop: readonly string[];
+  reason: string;
+};
+
+export type RouteHeadersType = { source: string; headers: HeaderType[] };

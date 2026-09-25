@@ -9,11 +9,15 @@ import "server-only";
 import { z } from "zod";
 /** @module email */
 import { EMAIL_ENV } from "@/modules/email/env";
+/** @module razorpay */
+import { RAZORPAY_ENV } from "@/modules/razorpay/env";
 
 const EnvSchema = z.object({
   NEXT_PUBLIC_SITE_URL: z.url(),
   /** @module email */
   ...EMAIL_ENV,
+  /** @module razorpay */
+  ...RAZORPAY_ENV,
 });
 
 export const ENV = parseEnv();

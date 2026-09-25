@@ -29,7 +29,9 @@ export type SiteConfigType = {
   nav: readonly NavItemType[];
   passes: readonly PassType[];
   earlyUntil: string;
-  checkout?: (passId: string) => Route;
+  /** @module razorpay */
+  checkout?: (passId: string) => Route<`/checkout/${string}`>;
+  /** @module supabase */
   account?: NavItemType;
 };
 

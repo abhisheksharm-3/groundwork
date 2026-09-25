@@ -1,29 +1,18 @@
 "use client";
 
-import { cn } from "cn";
 /**
  * The contact form. It posts to a Server Action, so it works as a plain form with
  * JavaScript off; with it on, errors appear beside their fields, focus moves to
  * the first one, and a live region announces the result.
  */
-import {
-  type ReactNode,
-  useActionState,
-  useEffect,
-  useId,
-  useRef,
-} from "react";
+import { type ReactNode, useActionState, useEffect, useRef } from "react";
 import { actionStyles } from "@/components/site/action-styles";
+import { FormField } from "@/components/site/FormField";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { sendContactAction } from "../actions";
 import { MESSAGE_MAX } from "../schemas";
-import type {
-  ContactFieldType,
-  ContactStateType,
-  FieldPropsType,
-} from "../types";
+import type { ContactFieldType, ContactStateType } from "../types";
 
 const INITIAL: ContactStateType = { status: "idle" };
 
@@ -76,7 +65,7 @@ export function ContactForm(): ReactNode {
         {state.status === "failed" ? state.message : ""}
       </p>
 
-      <Field name="name" label="Your name" error={errors.name}>
+      <FormField name="name" label="Your name" error={errors.name}>
         {(props) => (
           <Input
             {...props}
@@ -85,8 +74,8 @@ export function ContactForm(): ReactNode {
             required
           />
         )}
-      </Field>
-      <Field
+      </FormField>
+      <FormField
         name="email"
         label="Email"
         hint="We reply to this address."
@@ -101,8 +90,8 @@ export function ContactForm(): ReactNode {
             required
           />
         )}
-      </Field>
-      <Field
+      </FormField>
+      <FormField
         name="message"
         label="Message"
         hint={`Up to ${MESSAGE_MAX.toLocaleString("en-IN")} characters.`}
@@ -117,7 +106,7 @@ export function ContactForm(): ReactNode {
             required
           />
         )}
-      </Field>
+      </FormField>
 
       <div aria-hidden="true" className="absolute left-[-100vw]">
         <label>
@@ -139,48 +128,5 @@ export function ContactForm(): ReactNode {
         </button>
       </div>
     </form>
-  );
-}
-
-/**
- * A labelled control. The hint and the error sit outside the `<label>` and are
- * wired by `aria-describedby`, because text inside a label becomes part of the
- * field's accessible name and would change it after a failed submit.
- */
-function Field({
-  name,
-  label,
-  hint,
-  error,
-  children,
-}: FieldPropsType): ReactNode {
-  const id = useId();
-  const hintId = hint ? `${id}-hint` : undefined;
-  const errorId = error ? `${id}-error` : undefined;
-
-  return (
-    <div className="grid gap-2">
-      <Label htmlFor={id} className="label text-ink">
-        {label}
-      </Label>
-      {children({
-        id,
-        name,
-        className: cn("bg-surface text-base", error && "border-signal"),
-        "aria-invalid": error ? true : undefined,
-        "aria-describedby":
-          [hintId, errorId].filter(Boolean).join(" ") || undefined,
-      })}
-      {hint ? (
-        <span id={hintId} className="text-sm text-ink-soft">
-          {hint}
-        </span>
-      ) : null}
-      {error ? (
-        <span id={errorId} className="text-sm text-signal">
-          {error}
-        </span>
-      ) : null}
-    </div>
   );
 }

@@ -6,12 +6,12 @@ import type { ReactNode } from "react";
 import type { ActionLinkPropsType } from "@/types/ui";
 import { actionStyles } from "./action-styles";
 
-export function ActionLink({
+export function ActionLink<HrefType extends string>({
   href,
   variant = "brand",
   className,
   children,
-}: ActionLinkPropsType): ReactNode {
+}: ActionLinkPropsType<HrefType>): ReactNode {
   return (
     <Link href={href} className={cn(actionStyles(variant), className)}>
       {children}

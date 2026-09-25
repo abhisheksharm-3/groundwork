@@ -9,6 +9,7 @@
  */
 import { clientAddress } from "@/lib/client-address";
 import { deliverMail } from "@/lib/deliver-mail";
+import { firstFieldErrors } from "@/lib/field-errors";
 import { createRateLimiter } from "@/lib/rate-limit";
 import { SITE } from "@/lib/site-config";
 import { CAPABILITIES } from "@/modules/registry";
@@ -19,6 +20,8 @@ import type {
   ContactStateType,
   ContactValuesType,
 } from "./types";
+
+const FIELDS: readonly ContactFieldType[] = ["name", "email", "message"];
 
 const isAllowed = createRateLimiter({ limit: 10, windowMs: 60_000 });
 
@@ -50,7 +53,7 @@ export async function sendContactAction(
       return { status: "sent" };
     return {
       status: "invalid",
-      errors: fieldErrors(parsed.error.issues),
+      errors: firstFieldErrors(parsed.error.issues, FIELDS),
       values,
     };
   }
@@ -101,22 +104,6 @@ async function storeMessage(message: ContactMessageType): Promise<boolean> {
   if (!CAPABILITIES.saveContactMessage) return false;
   await CAPABILITIES.saveContactMessage(message);
   return true;
-}
-
-function fieldErrors(
-  issues: readonly { path: PropertyKey[]; message: string }[],
-): Partial<Record<ContactFieldType, string>> {
-  const errors: Partial<Record<ContactFieldType, string>> = {};
-  for (const issue of issues) {
-    const field = issue.path[0];
-    if (
-      (field === "name" || field === "email" || field === "message") &&
-      !errors[field]
-    ) {
-      errors[field] = issue.message;
-    }
-  }
-  return errors;
 }
 
 /** What the visitor typed, echoed back so a failed submit never loses their message. Capped, and only ever re-rendered as text. */

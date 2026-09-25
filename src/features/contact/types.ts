@@ -1,5 +1,4 @@
-/** The contact form's fields, its action's result, and the props of its field wrapper. */
-import type { ReactNode } from "react";
+/** The contact form's fields and its action's result. */
 
 export type ContactFieldType = "name" | "email" | "message";
 
@@ -14,19 +13,3 @@ export type ContactStateType =
       values: ContactValuesType;
     }
   | { status: "failed"; message: string; values: ContactValuesType };
-
-export type ControlPropsType = {
-  id: string;
-  name: string;
-  className: string;
-  "aria-invalid": boolean | undefined;
-  "aria-describedby": string | undefined;
-};
-
-export type FieldPropsType = {
-  name: ContactFieldType;
-  label: string;
-  hint?: string;
-  error?: string;
-  children: (props: ControlPropsType) => ReactNode;
-};

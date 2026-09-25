@@ -13,7 +13,12 @@
  * Styles allow `'unsafe-inline'` because next/image blur placeholders are inline
  * style attributes.
  */
-import type { CspSourcesType, HeaderType } from "../types/security.ts";
+import type {
+  CspExemptionType,
+  CspSourcesType,
+  HeaderType,
+  RouteHeadersType,
+} from "../types/security.ts";
 
 const CORE: Record<string, readonly string[]> = {
   "default-src": ["'self'"],
@@ -30,20 +35,28 @@ const CORE: Record<string, readonly string[]> = {
   "require-trusted-types-for": ["'script'"],
 };
 
-/** React's development build needs eval to rebuild server error stacks in the browser. */
-const DEV_ONLY: CspSourcesType = { "script-src": ["'unsafe-eval'"] };
+/** React's development build needs eval to rebuild server error stacks in the browser. Add it only in dev. */
+export const DEV_CSP: CspSourcesType = { "script-src": ["'unsafe-eval'"] };
 
+/** No exemption may reopen framing, plugins or the document base, whatever a module asks for. */
+const PROTECTED: ReadonlySet<string> = new Set([
+  "frame-ancestors",
+  "object-src",
+  "base-uri",
+  "default-src",
+]);
+
+/** The policy: the core, minus any directives in `drop`, plus every source in `extras`. */
 export function buildCsp(
-  modules: readonly CspSourcesType[],
-  isDev: boolean,
+  extras: readonly CspSourcesType[],
+  drop: readonly string[] = [],
 ): string {
   const merged = new Map<string, Set<string>>(
-    Object.entries(CORE).map(([directive, sources]) => [
-      directive,
-      new Set(sources),
-    ]),
+    Object.entries(CORE)
+      .filter(([directive]) => !drop.includes(directive))
+      .map(([directive, sources]) => [directive, new Set(sources)]),
   );
-  for (const extra of isDev ? [...modules, DEV_ONLY] : modules) {
+  for (const extra of extras) {
     for (const [directive, sources = []] of Object.entries(extra)) {
       const set = merged.get(directive) ?? new Set<string>();
       if (sources.length > 0) set.delete("'none'");
@@ -54,6 +67,32 @@ export function buildCsp(
   return [...merged]
     .map(([directive, sources]) => `${directive} ${[...sources].join(" ")}`)
     .join("; ");
+}
+
+/**
+ * The header rules for next.config: every route gets the full policy, then each
+ * exemption's route gets the policy minus the directives it names. Next applies
+ * the later rule when two set the same header on one path.
+ */
+export function routeHeaders(
+  extras: readonly CspSourcesType[],
+  exemptions: readonly CspExemptionType[],
+): RouteHeadersType[] {
+  const rules: RouteHeadersType[] = [
+    { source: "/(.*)", headers: securityHeaders(buildCsp(extras)) },
+  ];
+  for (const exemption of exemptions) {
+    const refused = exemption.drop.filter((directive) =>
+      PROTECTED.has(directive),
+    );
+    if (refused.length > 0)
+      throw new Error(`A CSP exemption may not drop ${refused.join(", ")}`);
+    rules.push({
+      source: exemption.source,
+      headers: securityHeaders(buildCsp(extras, exemption.drop)),
+    });
+  }
+  return rules;
 }
 
 export function securityHeaders(csp: string): HeaderType[] {
