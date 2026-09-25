@@ -7,9 +7,13 @@
  */
 import "server-only";
 import { z } from "zod";
+/** @module email */
+import { EMAIL_ENV } from "@/modules/email/env";
 
 const EnvSchema = z.object({
   NEXT_PUBLIC_SITE_URL: z.url(),
+  /** @module email */
+  ...EMAIL_ENV,
 });
 
 export const ENV = parseEnv();

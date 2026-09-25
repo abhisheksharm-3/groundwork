@@ -5,5 +5,10 @@
  * never import each other, so a strip can never leave a dangling import.
  */
 import type { CapabilitiesType } from "@/types/capabilities";
+/** @module email */
+import { sendMail } from "./email/send";
 
-export const CAPABILITIES: CapabilitiesType = {};
+export const CAPABILITIES: CapabilitiesType = {
+  /** @module email */
+  sendMail,
+};
