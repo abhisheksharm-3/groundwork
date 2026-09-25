@@ -54,6 +54,13 @@ says in visible copy that it is not switched on yet.
 
 ## Make it the client's
 
+In Claude Code, `/new-site path/to/brief.pdf` on a fresh clone does all of it: it
+picks the modules from the brief and confirms them with you, runs setup, applies the
+brand, rewrites the content, and verifies with the full check and e2e suite. Legal
+terms the brief does not state are left for the client, never invented.
+
+To do it by hand instead:
+
 1. Run `/brand path/to/brief.pdf` in Claude Code. It rewrites `PRODUCT.md`,
    `DESIGN.md`, `src/styles/tokens.css`, `src/styles/fonts.ts` and
    `src/lib/site-config.ts`, and reports every fact it could not find in the brief.

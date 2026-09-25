@@ -74,7 +74,8 @@ spec is `.polaris/specs/2026-09-12-client-site-template-spec.md`; read it before
 changing structure.
 
 `npm run setup` asks which optional modules a project keeps, removes the rest from
-every file they touch, checks the result and starts a fresh git history. Code that
+every file they touch, checks the result and starts a fresh git history.
+`/new-site <brief>` runs setup, `/brand` and the content pass from a client's PDF. Code that
 survives a strip must not reference code that does not.
 
 ## The manifest rule
@@ -96,6 +97,7 @@ blocks, so a new touch point has to be marked the day it is added.
 | `npm run check` | Route types, `tsc`, Biome, and every `*.check.mts`. The gate. |
 | `npm run format` | `biome format --write` |
 | `npm run e2e` | Playwright against a production build, including the `instant()` guard |
+| `/brand <brief>` | Rewrites the brand docs, tokens, fonts and site facts from a client brief |
 
 ## Architecture
 

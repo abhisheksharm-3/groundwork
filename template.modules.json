@@ -69,7 +69,8 @@
         "template.modules.json",
         "scripts",
         ".polaris/specs/2026-09-12-client-site-template-spec.md",
-        ".polaris/reports/2026-09-25-groundwork-build-report.md"
+        ".polaris/reports/2026-09-25-groundwork-build-report.md",
+        ".claude/commands/new-site.md"
       ],
       "dependencies": [],
       "scripts": ["setup"],
